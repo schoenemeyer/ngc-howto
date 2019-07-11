@@ -14,6 +14,9 @@ https://hub.docker.com/r/nvidia/cuda/
 
 e.g. 
 https://gitlab.com/nvidia/cuda/blob/ubuntu16.04/9.1/base/Dockerfile
+
+This is the base image.
+
 ```
 docker build -t cuda9.1 .
 ```
@@ -84,6 +87,62 @@ Thu Jul 11 17:37:03 2019
 root@793100aa5520:/home/thomas/nvidia# ^C
 root@793100aa5520:/home/thomas/nvidia# 
 ```
+Now you want to run a docker with the runtime environment
+You dowload the runtime dockerfile
+https://gitlab.com/nvidia/cuda/blob/ubuntu16.04/9.1/runtime/Dockerfile
+
+adjust the Dockerfile
+```
+FROM cuda9.1:latest
+LABEL maintainer "NVIDIA CORPORATION <cudatools@nvidia.com>"
+
+ENV NCCL_VERSION 2.2.12
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        cuda-libraries-$CUDA_PKG_VERSION \
+        libnccl2=$NCCL_VERSION-1+cuda9.1 && \
+    apt-mark hold libnccl2 && \
+    rm -rf /var/lib/apt/lists/*
+```
+Then 
+```
+docker build  -t cuda91runtime .
+```
+```
+Processing triggers for libc-bin (2.23-0ubuntu11) ...
+libnccl2 set on hold.
+Removing intermediate container f87c7d906f79
+ ---> 02cf47b87036
+Successfully built 02cf47b87036
+Successfully tagged cuda91runtime:latest
+```
+nvidia-docker run -it -v `pwd`:`pwd` -w `pwd` cuda91runtime:latest
+```
+root@2a0eb7d0ddb8:/home/thomas# nvidia-smi
+Thu Jul 11 18:06:09 2019       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 410.73       Driver Version: 410.73       CUDA Version: 10.0     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|===============================+======================+======================|
+|   0  GeForce GTX 105...  Off  | 00000000:01:00.0  On |                  N/A |
+| 30%   31C    P8    N/A /  75W |    529MiB /  4036MiB |      1%      Default |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                       GPU Memory |
+|  GPU       PID   Type   Process name                             Usage      |
+|=============================================================================|
++-----------------------------------------------------------------------------+
+root@2a0eb7d0ddb8:/home/thomas# 
+```
+
+
+
+
+
+
 
 
 
