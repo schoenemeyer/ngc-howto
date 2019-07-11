@@ -101,9 +101,11 @@ ENV NCCL_VERSION 2.2.12
 RUN apt-get update && apt-get install -y --no-install-recommends \
         cuda-libraries-$CUDA_PKG_VERSION \
         libnccl2=$NCCL_VERSION-1+cuda9.1 && \
-    apt-mark hold libnccl2 && \
-    rm -rf /var/lib/apt/lists/*
-RUN apt-get install libglu1-mesa-dev freeglut3-dev mesa-common-dev \
+        apt-mark hold libnccl2 && \
+        rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y libglu1-mesa-dev freeglut3-dev mesa-common-dev apt-utils
+
+
 ```
 Then 
 ```
