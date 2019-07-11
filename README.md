@@ -14,11 +14,12 @@ https://hub.docker.com/r/nvidia/cuda/
 
 e.g. 
 https://gitlab.com/nvidia/cuda/blob/ubuntu16.04/9.1/base/Dockerfile
-
+```
 docker build -t cuda9.1 .
+```
 
-
-etting up cuda-cudart-9-1 (9.1.85-1) ...
+```
+setting up cuda-cudart-9-1 (9.1.85-1) ...
 Processing triggers for libc-bin (2.23-0ubuntu11) ...
 Removing intermediate container d1b9899f1b32
  ---> 016a00b8f520
@@ -56,8 +57,11 @@ Removing intermediate container 02ac3f72beda
  ---> b36da56fc5b2
 Successfully built b36da56fc5b2
 Successfully tagged cuda9.1:latest
+```
 
+```
 nvidia-docker run -it -v `pwd`:`pwd` -w `pwd` cuda9.1:latest
+```
 
 ```
 root@793100aa5520:/home/thomas/nvidia# nvidia-smi
