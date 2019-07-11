@@ -101,6 +101,7 @@ ENV NCCL_VERSION 2.2.12
 RUN apt-get update && apt-get install -y --no-install-recommends \
         cuda-libraries-$CUDA_PKG_VERSION \
         libnccl2=$NCCL_VERSION-1+cuda9.1 && \
+        apt-get install libglu1-mesa-dev freeglut3-dev mesa-common-dev \
     apt-mark hold libnccl2 && \
     rm -rf /var/lib/apt/lists/*
 ```
@@ -138,7 +139,12 @@ Thu Jul 11 18:06:09 2019
 root@2a0eb7d0ddb8:/home/thomas# 
 ```
 
+./nbody
 
+
+
+
+failed to open display 'localhost:0.0'
 
 
 
