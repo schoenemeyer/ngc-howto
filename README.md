@@ -1,5 +1,23 @@
 # You want to start with Nvidia Docker
 
+```
+docker pull nvcr.io/nvidia/tensorflow:19.10-py3
+
+####################################################################################################################
+# Load NGC Container
+nvidia-docker run -it   --rm -v `pwd`:`pwd` -w `pwd` nvcr.io/nvidia/tensorflow:19.10-py3
+####################################################################################################################
+# RUN DISTRIBUTED TF
+python scripts/tf_cnn_benchmarks/tf_cnn_benchmarks.py --model resnet50 --batch_size 64 --num_gpus=8 --use_fp16=true
+####################################################################################################################
+# RUN WITH HOROVOD
+####################################################################################################################
+mpirun -np 8  --allow-run-as-root -H localhost:8 -bind-to none -map-by slot -x LD_LIBRARY_PATH -x PATH -mca pml ob1 -mca btl ^openib
+  -x NCCL_DEBUG=INFO python scripts/tf_cnn_benchmarks/tf_cnn_benchmarks.py --model resnet50 --batch_size 128 --use_fp16=true --varia
+ble_update horovod
+./runhor 8 64 resnet50
+```
+
 this example was done 
 # ngc-howto
 
